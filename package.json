@@ -6,10 +6,12 @@
   "author": "Sunghyun",
   "license": "MIT",
   "scripts": {
-    "dev:start": "nodemon --exec babel-node src/app.js"
+    "dev:start": "nodemon --exec babel-node src/app.js",
+    "dev:assets": "webpack -w"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "typescript": "^3.3.4000"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -17,7 +19,8 @@
     "@babel/node": "^7.2.2",
     "@babel/polyfill": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
-    "@babel/preset-stage-3": "^7.0.0",
-    "nodemon": "^1.18.10"
+    "babel-loader": "^8.0.5",
+    "nodemon": "^1.18.10",
+    "ts-loader": "^5.3.3"
   }
 }
