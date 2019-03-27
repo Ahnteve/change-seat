@@ -16,11 +16,14 @@ class Classroom {
   private static WIDTH: number = 1000;
   private static HEIGHT: number = 2000;
 
-  constructor(id) {
+  constructor(id: string) {
     this.canvas = <HTMLCanvasElement>document.getElementById(id);
     this.ctx = this.canvas.getContext("2d");
     this.image = new Image();
-    this.image.src = "image/class.png";
+    this.image.addEventListener("load", () => {
+      this.draw();
+    });
+    this.image.src = "./image/class.png";
 
     this.canvas.addEventListener("mousedown", this.handleStartDrag);
 
@@ -28,10 +31,14 @@ class Classroom {
     this.col = 2;
   }
 
+  createStudent() {}
+
+  putDesk() {}
+
   draw(): void {
     this.ctx.drawImage(this.image, 0, 0, Classroom.WIDTH, Classroom.HEIGHT);
-    this.desks.forEach(desk => desk.draw(this.ctx));
-    this.students.forEach(student => student.draw(this.ctx));
+    if (this.desks) this.desks.forEach(desk => desk.draw(this.ctx));
+    if (this.students) this.students.forEach(student => student.draw(this.ctx));
   }
 
   reset(): void {

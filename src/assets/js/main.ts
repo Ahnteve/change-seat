@@ -1,8 +1,36 @@
-// var classroom;
+import Classroom from "./Classroom";
+
+const rowSelector: Element = document.querySelector(".js-row-selector");
+const colSelector: Element = document.querySelector(".js-col-selector");
+const resetButton: Element = document.querySelector(".js-reset-button");
+const setButton: Element = document.querySelector(".js-set-button");
+const addButton: Element = document.querySelector(".js-add-button");
+const reomveButton: Element = document.querySelector(".js-remove-button");
+
+const classroom: Classroom = new Classroom("canvas");
+
+const handleChangeRow = event => {};
+
+const handleChangeCol = event => {};
+
+const handleClickReset = event => {};
+const handleClickSet = event => {};
+const handleClickAdd = event => {};
+const handleClickRemove = event => {};
+
+rowSelector.addEventListener("change", handleChangeRow);
+colSelector.addEventListener("change", handleChangeCol);
+
+resetButton.addEventListener("click", handleClickReset);
+setButton.addEventListener("click", handleClickSet);
+
+addButton.addEventListener("click", handleClickAdd);
+reomveButton.addEventListener("click", handleClickRemove);
+
 // var names;
 
 // var count = 1;
-// var diffx, diffy;
+// //var diffx, diffy;
 
 // function createStudent() {
 //   var names = document.getElementsByName("name");
