@@ -2,14 +2,15 @@ import Student from "./Student";
 
 class Classroom {
   private canvas: HTMLCanvasElement;
-  private context: CanvasRenderingContext2D;
+  private ctx: CanvasRenderingContext2D;
   private row: number;
   private col: number;
+
   private students: Student[];
 
   constructor(id) {
     this.canvas = <HTMLCanvasElement>document.getElementById(id);
-    this.context = this.canvas.getContext("2d");
+    this.ctx = this.canvas.getContext("2d");
     this.row = 2;
     this.col = 2;
   }
@@ -18,8 +19,6 @@ class Classroom {
   stop(): void {}
   reset(): void {}
 }
-
-// window.onload = start;
 
 // var row = 2;
 // var col = 2;
