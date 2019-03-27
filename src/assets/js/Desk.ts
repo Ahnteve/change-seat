@@ -1,12 +1,14 @@
 class Desk {
-  private id: number;
-  private x: number;
-  private y: number;
-  private image: HTMLImageElement;
-  private seated: boolean;
+  public id: number;
+  public x: number;
+  public y: number;
+  public image: HTMLImageElement;
 
-  private static WIDTH: number = 64;
-  private static HEIGHT: number = 120;
+  public seated: boolean;
+  public seatStudent: number;
+
+  public static WIDTH: number = 64;
+  public static HEIGHT: number = 120;
 
   constructor(x: number, y: number) {
     this.x = x;

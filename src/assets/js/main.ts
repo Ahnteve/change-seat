@@ -1,62 +1,8 @@
-// window.onload = start;
-
-// var row = 2;
-// var col = 2;
-
-// var desks = [];
-// var students = [];
 // var classroom;
 // var names;
 
 // var count = 1;
 // var diffx, diffy;
-// var area = {
-//   canvas: document.getElementById("canvas"),
-//   start: function() {
-//     canvas.addEventListener("mousedown", startDrag, false);
-//     this.context = this.canvas.getContext("2d");
-//     this.interval = setInterval(updateArea, 20);
-//   },
-//   clear: function() {
-//     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-//   },
-//   stop: function() {
-//     clearInterval(this.interval);
-//   },
-//   reset: function() {
-//     for (var i = 0; i < students.length; i++) {
-//       students[i].reset();
-//     }
-//     for (var i = 0; i < desks.length; i++) {
-//       desks[i].reset();
-//     }
-//   }
-// };
-
-// function reset() {
-//   for (var i = 0; i < students.length; i++) {
-//     students[i].reset();
-//   }
-//   for (var i = 0; i < desks.length; i++) {
-//     desks[i].reset();
-//   }
-// }
-
-// function start() {
-//   createStudent();
-//   createDesk();
-
-//   classroom = new Classroom(0, 0, 1000, 2000, "image/class.png");
-
-//   area.start();
-// }
-
-// function updateArea() {
-//   classroom.draw();
-//   for (i = 0; i < desks.length; i++) desks[i].draw();
-
-//   for (i = 0; i < students.length; i++) students[i].draw();
-// }
 
 // function createStudent() {
 //   var names = document.getElementsByName("name");
@@ -111,10 +57,6 @@
 //     }
 //   });
 // }
-// var generateRandom = function(min, max) {
-//   var num = Math.floor(Math.random() * (max - min + 1)) + min;
-//   return num;
-// };
 
 // function setSeat() {
 //   if (students.length > desks.length) {
@@ -165,126 +107,6 @@
 //   }
 // }
 
-// function Student(x, y, width, height, image, name, id) {
-//   this.image = new Image();
-//   this.image.src = image;
-//   this.width = width;
-//   this.height = height;
-//   this.x = x;
-//   this.y = y;
-//   this.name = name;
-//   this.id = id;
-//   this.currentCycle = 0;
-//   this.deskId = -1;
-//   this.seat = false;
-
-//   this.draw = draw;
-//   this.setCurrentCycle = setCurrentCycle;
-
-//   function setCurrentCycle(updateCycle) {
-//     var temp = 0;
-//     switch (updateCycle) {
-//       case "down":
-//         temp = 0;
-//       case "up":
-//         temp = 3;
-//       case "left":
-//         temp = 1;
-//       case "right":
-//         temp = 2;
-//     }
-//     this.currentCycle = temp;
-//   }
-//   function draw() {
-//     ctx = area.context;
-//     ctx.drawImage(
-//       this.image,
-//       0 * 64,
-//       this.currentCycle * 100,
-//       this.width,
-//       this.height,
-//       this.x,
-//       this.y,
-//       this.width,
-//       this.height
-//     );
-//     ctx.font = "15px 나눔고딕";
-//     ctx.textAlign = "center";
-//     ctx.fillText(this.name, this.x + 32, this.y);
-//   }
-
-//   this.mouseover = mouseover;
-//   function mouseover(mx, my) {
-//     if (
-//       mx >= this.x &&
-//       mx <= this.x + this.width &&
-//       my >= this.y &&
-//       my <= this.y + this.height
-//     ) {
-//       return true;
-//     } else return false;
-//   }
-
-//   this.reset = reset;
-//   function reset() {
-//     this.x = generateRandom(0, 936);
-//     this.y = generateRandom(250 + row * 120, 250 + row * 120 + 50);
-//     this.currentCycle = 0;
-//     this.deskId = -1;
-//     this.seat = false;
-//   }
-// }
-// function Classroom(x, y, width, height, image) {
-//   this.image = new Image();
-//   this.image.src = image;
-//   this.width = width;
-//   this.height = height;
-//   this.x = x;
-//   this.y = y;
-//   this.draw = draw;
-
-//   function draw() {
-//     ctx = area.context;
-//     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-//   }
-// }
-
-// function Desk(x, y, width, height, image, id) {
-//   this.image = new Image();
-//   this.image.src = image;
-//   this.width = width;
-//   this.height = height;
-//   this.x = x;
-//   this.y = y;
-//   this.seat = false;
-//   this.studentId = -1;
-//   this.id = id;
-//   this.draw = draw;
-
-//   function draw() {
-//     ctx = area.context;
-//     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-//   }
-
-//   this.mouseover = mouseover;
-//   function mouseover(mx, my) {
-//     if (
-//       mx >= this.x &&
-//       mx <= this.x + this.width &&
-//       my >= this.y &&
-//       my <= this.y + this.height
-//     ) {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   }
-//   this.reset = reset;
-//   function reset() {
-//     this.seat = false;
-//     this.studentId = -1;
-//   }
-// }
 // function updateName(index) {
 //   for (i = 0; i < students.length; i++) {
 //     if (students[i].id == index) {
@@ -292,58 +114,6 @@
 //       students[i].name = name;
 //     }
 //   }
-// }
-// function startDrag(e) {
-//   mx = e.offsetX;
-//   my = e.offsetY;
-//   var item;
-//   for (i = 0; i < students.length; i++) {
-//     if (students[i].mouseover(mx, my)) {
-//       if (students[i].seat) {
-//         students[i].seat = false;
-//         desks[students[i].deskId - 1].seat = false;
-//       }
-//       diffx = mx - students[i].x;
-//       diffy = my - students[i].y;
-//       item = students[i];
-//       //alert(item.image.src);
-//       students.splice(i, 1);
-//       students.push(item);
-
-//       canvas.addEventListener("mousemove", move, false);
-//       canvas.addEventListener("mouseup", drop, false);
-//       break;
-//     }
-//   }
-// }
-// function move(e) {
-//   mx = e.offsetX;
-//   my = e.offsetY;
-//   students[students.length - 1].x = mx - diffx;
-//   students[students.length - 1].y = my - diffy;
-// }
-// function drop(e) {
-//   mx = e.offsetX;
-//   my = e.offsetY;
-//   var temp = 0;
-//   for (i = 0; i < desks.length; i++) {
-//     if (desks[i].mouseover(mx, my)) {
-//       if (desks[i].seat == false) {
-//         //alert(students[students.length-1].image.src);
-//         students[students.length - 1].seat = true;
-//         students[students.length - 1].x = desks[i].x;
-//         students[students.length - 1].y = desks[i].y + 15;
-//         //students[students.length-1].setCurrentCycle(1);
-//         desks[i].seat = true;
-//         desks[i].studentId = students[students.length - 1].id;
-//         students[students.length - 1].deskId = desks[i].id;
-//         break;
-//       }
-//     }
-//   }
-
-//   canvas.removeEventListener("mousemove", move, false);
-//   canvas.removeEventListener("mouseup", drop, false);
 // }
 
 // document.getElementById("row").addEventListener("change", function() {
