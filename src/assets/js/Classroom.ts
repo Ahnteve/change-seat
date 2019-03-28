@@ -24,6 +24,12 @@ class Classroom {
       this.draw();
     });
     this.image.src = "./image/class.png";
+    this.students = [];
+    this.desks = [];
+
+    this.handleStartDrag = this.handleStartDrag.bind(this);
+    this.handleDrag = this.handleDrag.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
 
     this.canvas.addEventListener("mousedown", this.handleStartDrag);
 
@@ -31,7 +37,10 @@ class Classroom {
     this.col = 2;
   }
 
-  createStudent() {}
+  createStudent() {
+    this.students.push(new Student());
+    this.draw();
+  }
 
   putDesk() {}
 
@@ -50,31 +59,34 @@ class Classroom {
     const mx: number = event.offsetX;
     const my: number = event.offsetY;
 
-    this.students.forEach((student, index) => {
-      if (student.mouseover(mx, my)) {
-        if (student.seated) {
-          student.standUp();
-          //       desks[students[i].deskId - 1].seat = false;
-        }
-        this.diffx = mx - student.x;
-        this.diffy = my - student.y;
-        let item = student;
-        this.students.splice(index, 1);
-        this.students.push(item);
+    if (this.students)
+      this.students.forEach((student, index) => {
+        if (student.mouseover(mx, my)) {
+          if (student.seated) {
+            student.standUp();
+            //       desks[students[i].deskId - 1].seat = false;
+          }
+          this.diffx = mx - student.x;
+          this.diffy = my - student.y;
+          let item = student;
+          this.students.splice(index, 1);
+          this.students.push(item);
 
-        this.canvas.addEventListener("mousemove", this.handleDrag);
-        this.canvas.addEventListener("mouseup", this.handleDrop);
-      }
-    });
+          this.canvas.addEventListener("mousemove", this.handleDrag);
+          this.canvas.addEventListener("mouseup", this.handleDrop);
+        }
+      });
   }
 
   handleDrag(event: MouseEvent) {
     const mx: number = event.offsetX;
     const my: number = event.offsetY;
+    console.log("drag");
 
     const selectedStudent: Student = this.students[this.students.length - 1];
     selectedStudent.x = mx - this.diffx;
     selectedStudent.y = my - this.diffy;
+    this.draw();
   }
 
   handleDrop(event: MouseEvent) {
@@ -94,6 +106,8 @@ class Classroom {
         }
       }
     });
+
+    this.draw();
 
     this.canvas.removeEventListener("mousemove", this.handleDrag);
     this.canvas.removeEventListener("mouseup", this.handleDrop);

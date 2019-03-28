@@ -10,6 +10,7 @@
     "dev:assets": "webpack -w"
   },
   "dependencies": {
+    "@types/es6-promise": "^3.3.0",
     "express": "^4.16.4",
     "typescript": "^3.3.4000"
   },

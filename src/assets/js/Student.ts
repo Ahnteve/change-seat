@@ -14,13 +14,23 @@ class Student {
 
   constructor() {
     this.x = GenerateRandom(0, 936);
-    this.y = GenerateRandom(0, 936);
+    this.y = GenerateRandom(0, 200);
     this.image = new Image();
     this.image.src = `image/${GenerateRandom(1, 8)}.png`;
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
-    ctx.drawImage(this.image, 0 * 64 + 18, 100, Student.WIDTH, Student.HEIGHT);
+    ctx.drawImage(
+      this.image,
+      18,
+      0,
+      Student.WIDTH,
+      Student.HEIGHT,
+      this.x,
+      this.y,
+      Student.WIDTH,
+      Student.HEIGHT
+    );
     ctx.font = "15px 나눔고딕";
     ctx.textAlign = "center";
     ctx.fillText(this.name, this.x + 32, this.y);

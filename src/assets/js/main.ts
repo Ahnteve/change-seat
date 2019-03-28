@@ -15,7 +15,9 @@ const handleChangeCol = event => {};
 
 const handleClickReset = event => {};
 const handleClickSet = event => {};
-const handleClickAdd = event => {};
+const handleClickAdd = event => {
+  classroom.createStudent();
+};
 const handleClickRemove = event => {};
 
 rowSelector.addEventListener("change", handleChangeRow);
