@@ -12,9 +12,10 @@ class Student {
   public static WIDTH: number = 64;
   public static HEIGHT: number = 100;
 
-  constructor() {
+  constructor(id: number, row: number) {
+    this.id = id;
     this.x = GenerateRandom(0, 936);
-    this.y = GenerateRandom(0, 200);
+    this.y = GenerateRandom(250 + row * 120, 250 + row * 120 + 50);
     this.image = new Image();
     this.image.src = `image/${GenerateRandom(1, 8)}.png`;
   }
@@ -47,9 +48,9 @@ class Student {
     } else return false;
   }
 
-  reset(): void {
+  reset(row: number): void {
     this.x = GenerateRandom(0, 936);
-    this.y = GenerateRandom(250 + 2 * 120, 250 + 2 * 120 + 50);
+    this.y = GenerateRandom(250 + row * 120, 250 + row * 120 + 50);
     this.seated = false;
   }
 

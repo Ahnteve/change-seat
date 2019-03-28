@@ -1,23 +1,43 @@
 import Classroom from "./Classroom";
 
-const rowSelector: Element = document.querySelector(".js-row-selector");
-const colSelector: Element = document.querySelector(".js-col-selector");
+const rowSelector: HTMLInputElement = document.querySelector(
+  ".js-row-selector"
+);
+const colSelector: HTMLInputElement = document.querySelector(
+  ".js-col-selector"
+);
 const resetButton: Element = document.querySelector(".js-reset-button");
 const setButton: Element = document.querySelector(".js-set-button");
 const addButton: Element = document.querySelector(".js-add-button");
 const reomveButton: Element = document.querySelector(".js-remove-button");
+const hasEmpty: HTMLInputElement = document.querySelector("[name=has-empty]");
 
-const classroom: Classroom = new Classroom("canvas");
+const classroom: Classroom = new Classroom(
+  "canvas",
+  Number(rowSelector.value),
+  Number(colSelector.value)
+);
 
-const handleChangeRow = event => {};
+const handleChangeRow = event => {
+  classroom.setDesk(event.target.value, Number(colSelector.value));
+  classroom.reset();
+};
+const handleChangeCol = event => {
+  classroom.setDesk(Number(rowSelector.value), event.target.value);
+  classroom.reset();
+};
 
-const handleChangeCol = event => {};
+const handleClickReset = () => {
+  classroom.reset();
+};
+const handleClickSet = () => {
+  classroom.setSeat(hasEmpty.checked);
+};
 
-const handleClickReset = event => {};
-const handleClickSet = event => {};
-const handleClickAdd = event => {
+const handleClickAdd = () => {
   classroom.createStudent();
 };
+
 const handleClickRemove = event => {};
 
 rowSelector.addEventListener("change", handleChangeRow);
@@ -28,65 +48,6 @@ setButton.addEventListener("click", handleClickSet);
 
 addButton.addEventListener("click", handleClickAdd);
 reomveButton.addEventListener("click", handleClickRemove);
-
-// var names;
-
-// var count = 1;
-// //var diffx, diffy;
-
-// function createStudent() {
-//   var names = document.getElementsByName("name");
-//   for (var i = 0; i < count; i++) {
-//     students.push(
-//       new Student(
-//         generateRandom(0, 936),
-//         generateRandom(250 + row * 120, 250 + row * 120 + 50),
-//         64,
-//         100,
-//         "image/" + generateRandom(1, 8) + ".png",
-//         names[i].value,
-//         i + 1
-//       )
-//     );
-//   }
-// }
-
-// function createDesk() {
-//   desks = [];
-//   for (var i = 0; i < row; i++) {
-//     for (var j = 0; j < col; j++) {
-//       desks.push(
-//         new Desk(
-//           canvas.width / 2 + (j - col / 2) * 64,
-//           250 + i * 120,
-//           64,
-//           120,
-//           "image/desk.png",
-//           col * i + (j + 1)
-//         )
-//       );
-//     }
-//   }
-// }
-
-// function createEvents() {
-//   document.getElementById("row").addEventListener("change", function() {
-//     row = document.getElementById("row").value;
-//     canvas.height = 250 + row * 120 + 200;
-//     createDesk();
-//     for (var i = 0; i < students.length; i++) {
-//       students[i].reset();
-//     }
-//   });
-//   document.getElementById("col").addEventListener("change", function() {
-//     col = document.getElementById("col").value;
-
-//     createDesk();
-//     for (var i = 0; i < students.length; i++) {
-//       students[i].reset();
-//     }
-//   });
-// }
 
 // function setSeat() {
 //   if (students.length > desks.length) {
@@ -146,24 +107,6 @@ reomveButton.addEventListener("click", handleClickRemove);
 //   }
 // }
 
-// document.getElementById("row").addEventListener("change", function() {
-//   row = document.getElementById("row").value;
-//   //alert(row);
-//   canvas.height = 250 + row * 120 + 200;
-//   createDesk();
-//   for (var i = 0; students.length; i++) {
-//     students[i].reset();
-//   }
-// });
-// document.getElementById("col").addEventListener("change", function() {
-//   col = document.getElementById("col").value;
-//   //alert(col);
-
-//   createDesk();
-//   for (var i = 0; students.length; i++) {
-//     students[i].reset();
-//   }
-// });
 // document.getElementById("add").addEventListener("click", function() {
 //   var tr = document.createElement("tr");
 //   var temp = "";
@@ -204,29 +147,6 @@ reomveButton.addEventListener("click", handleClickRemove);
 //     alert("더 이상 삭제할 수 없습니다");
 //     return false;
 //   }
-// });
-// document.getElementById("save").addEventListener("click", function() {
-//   var names = document.getElementsByName("name");
-
-//   for (var i = 0; i < names.length; i++) {
-//     if (names[i].value == "") {
-//       alert("빈 항목이 있습니다");
-//       return false;
-//     }
-//   }
-//   document.getElementById("form").submit();
-// });
-// document.getElementById("load").addEventListener("click", function() {
-//   var code = document.getElementById("code");
-
-//   if (code.value == "") {
-//     alert("코드를 입력하세요");
-//     return false;
-//   } else if (code.value.length != 6) {
-//     alert("6자리 코드를 입력하세요");
-//     return false;
-//   }
-//   document.getElementById("dataload").submit();
 // });
 // function loadStudent() {
 //   for (var i = 1; i < count; i++) {

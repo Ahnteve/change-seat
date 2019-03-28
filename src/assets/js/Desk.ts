@@ -10,7 +10,8 @@ class Desk {
   public static WIDTH: number = 64;
   public static HEIGHT: number = 120;
 
-  constructor(x: number, y: number) {
+  constructor(id: number, x: number, y: number) {
+    this.id = id;
     this.x = x;
     this.y = y;
     this.image = new Image();
