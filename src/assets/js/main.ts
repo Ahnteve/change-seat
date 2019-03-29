@@ -11,9 +11,14 @@ const resetButton: Element = document.querySelector(".js-reset-button");
 const setButton: Element = document.querySelector(".js-set-button");
 const addButton: Element = document.querySelector(".js-add-button");
 const reomveButton: Element = document.querySelector(".js-remove-button");
+const studentName: HTMLInputElement = document.querySelector(
+  ".js-student-name"
+);
 const hasEmpty: HTMLInputElement = document.querySelector("[name=has-empty]");
+const studentList: Element = document.querySelector(".js-student-list");
 
 const loadedImages = LoadImages([
+  "image/desk.png",
   "image/1.png",
   "image/2.png",
   "image/3.png",
@@ -30,6 +35,26 @@ const classroom: Classroom = new Classroom(
   Number(colSelector.value),
   loadedImages
 );
+
+const handleRemove = (id: number): void => {
+  classroom.removeStudent(id);
+};
+
+const addStudentToTable = (id: number, name: string): void => {
+  const li = document.createElement("li");
+  const removeButton = document.createElement("button");
+  removeButton.innerHTML = "삭제";
+  removeButton.addEventListener("click", event => {
+    handleRemove(id);
+    const currentElement = <Element>event.target;
+    currentElement.parentElement.remove();
+  });
+
+  li.innerHTML = name;
+  li.appendChild(removeButton);
+
+  studentList.appendChild(li);
+};
 
 const handleChangeRow = event => {
   classroom.setDesk(event.target.value, Number(colSelector.value));
@@ -48,10 +73,11 @@ const handleClickSet = () => {
 };
 
 const handleClickAdd = () => {
-  classroom.createStudent();
+  const name: string = studentName.value;
+  const id: number = classroom.createStudent(name);
+  studentName.value = "";
+  addStudentToTable(id, name);
 };
-
-const handleClickRemove = event => {};
 
 rowSelector.addEventListener("change", handleChangeRow);
 colSelector.addEventListener("change", handleChangeCol);
@@ -60,7 +86,6 @@ resetButton.addEventListener("click", handleClickReset);
 setButton.addEventListener("click", handleClickSet);
 
 addButton.addEventListener("click", handleClickAdd);
-reomveButton.addEventListener("click", handleClickRemove);
 
 // function setSeat() {
 //   if (students.length > desks.length) {

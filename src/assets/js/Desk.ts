@@ -10,12 +10,11 @@ class Desk {
   public static WIDTH: number = 64;
   public static HEIGHT: number = 120;
 
-  constructor(id: number, x: number, y: number) {
+  constructor(id: number, x: number, y: number, image: HTMLImageElement) {
     this.id = id;
     this.x = x;
     this.y = y;
-    this.image = new Image();
-    this.image.src = "image/desk.png";
+    this.image = image;
     this.seated = false;
   }
 

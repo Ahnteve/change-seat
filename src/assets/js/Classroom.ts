@@ -8,7 +8,9 @@ class Classroom {
   private image: HTMLImageElement;
   private diffx: number;
   private diffy: number;
-  private loadedImages;
+  private loadedImages: Object;
+  private isSet: boolean;
+  private count: number = 0;
 
   public static MAX_WIDTH: number = 1000;
   public static MAX_HEIGHT: number = 2000;
@@ -19,12 +21,7 @@ class Classroom {
   private row: number;
   private col: number;
 
-  constructor(
-    id: string,
-    row: number,
-    col: number,
-    loadedImages: HTMLImageElement[]
-  ) {
+  constructor(id: string, row: number, col: number, loadedImages: Object) {
     this.canvas = <HTMLCanvasElement>document.getElementById(id);
     this.ctx = this.canvas.getContext("2d");
     this.image = new Image();
@@ -36,6 +33,7 @@ class Classroom {
     this.row = row;
     this.col = col;
     this.loadedImages = loadedImages;
+    this.isSet = false;
 
     this.setDesk(row, col);
 
@@ -46,11 +44,26 @@ class Classroom {
     this.canvas.addEventListener("mousedown", this.handleStartDrag);
   }
 
-  createStudent() {
-    const id: number = this.students.length + 1;
+  getId(): number {
+    return this.count++;
+  }
+
+  createStudent(name: string): number {
+    const id: number = this.getId();
     this.students.push(
-      new Student(id, this.row, this.loadedImages[GenerateRandom(1, 7)])
+      new Student(
+        id,
+        name,
+        this.row,
+        this.loadedImages[`image/${GenerateRandom(1, 7)}.png`]
+      )
     );
+    this.draw();
+    return id;
+  }
+
+  removeStudent(id: number): void {
+    this.students = this.students.filter(student => student.id !== id);
     this.draw();
   }
 
@@ -65,7 +78,8 @@ class Classroom {
           new Desk(
             col * i + (j + 1),
             this.canvas.width / 2 + (j - col / 2) * Desk.WIDTH,
-            250 + i * Desk.HEIGHT
+            250 + i * Desk.HEIGHT,
+            this.loadedImages["image/desk.png"]
           )
         );
       }
@@ -84,6 +98,9 @@ class Classroom {
   }
 
   setSeat(hasEmpty: boolean): void {
+    if (this.isSet) this.reset();
+    else this.isSet = true;
+
     const standingStudents = this.students.filter(student => !student.seated);
     standingStudents.sort(() => 0.5 - Math.random());
     const emptyDesks = this.desks.filter(desk => !desk.seated);

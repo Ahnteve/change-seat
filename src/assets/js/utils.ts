@@ -3,22 +3,13 @@ export const GenerateRandom = (min: number, max: number): number => {
   return num;
 };
 
-export const LoadImages = (imagefiles: string[]): HTMLImageElement[] => {
-  let loadcount = 0;
-  let preloaded = false;
-
-  const loadedImages: HTMLImageElement[] = [];
+export const LoadImages = (imagefiles: string[]): Object => {
+  const loadedImages: Object = {};
 
   imagefiles.forEach(imagefile => {
     let image = new Image();
-    image.onload = function() {
-      loadcount++;
-      if (loadcount == imagefiles.length) {
-        preloaded = true;
-      }
-    };
     image.src = imagefile;
-    loadedImages.push(image);
+    loadedImages[imagefile] = image;
   });
 
   return loadedImages;

@@ -39,20 +39,12 @@
 			<option value="9">9</option>
 			<option value="10">10</option>
 		</select>
-		빈자리 있음 <input type="checkbox" name="has-empty" />
+		빈자리 있음 <input type="checkbox" name="has-empty" /><br>
 
-		<input type="button" value="추가" class="add-button js-add-button" />
+		<input type="text" class="js-student-name" placeholder="이름">
+		<input type="button" value="추가" class="add-button js-add-button" /><br>
 		<input type="button" value="삭제" class="remove-button js-remove-button" />
-		<table id="table">
-			<tr>
-				<th>번호</th>
-				<th>이름</th>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td><input name="name"></td>
-			</tr>
-		</table>
+		<ul class="js-student-list"></ul>
 
 		<span id="studentCount"> </span>
 		<script src="/main.js"></script>
