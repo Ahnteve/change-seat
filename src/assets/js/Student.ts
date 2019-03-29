@@ -12,12 +12,12 @@ class Student {
   public static WIDTH: number = 64;
   public static HEIGHT: number = 100;
 
-  constructor(id: number, row: number) {
+  constructor(id: number, row: number, image: HTMLImageElement) {
     this.id = id;
     this.x = GenerateRandom(0, 936);
     this.y = GenerateRandom(250 + row * 120, 250 + row * 120 + 50);
-    this.image = new Image();
-    this.image.src = `image/${GenerateRandom(1, 8)}.png`;
+    this.image = image;
+    //this.image.src = `image/${GenerateRandom(1, 8)}.png`;
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
@@ -49,9 +49,9 @@ class Student {
   }
 
   reset(row: number): void {
+    this.standUp();
     this.x = GenerateRandom(0, 936);
     this.y = GenerateRandom(250 + row * 120, 250 + row * 120 + 50);
-    this.seated = false;
   }
 
   seat(): void {
@@ -60,6 +60,7 @@ class Student {
 
   standUp(): void {
     this.seated = false;
+    this.seatDesk = undefined;
   }
 }
 

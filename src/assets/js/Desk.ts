@@ -38,7 +38,7 @@ class Desk {
 
   reset() {
     this.seated = false;
-    //this.studentId = -1;
+    this.seatStudent = undefined;
   }
 }
 

@@ -1,4 +1,5 @@
 import Classroom from "./Classroom";
+import { LoadImages } from "./utils";
 
 const rowSelector: HTMLInputElement = document.querySelector(
   ".js-row-selector"
@@ -12,10 +13,22 @@ const addButton: Element = document.querySelector(".js-add-button");
 const reomveButton: Element = document.querySelector(".js-remove-button");
 const hasEmpty: HTMLInputElement = document.querySelector("[name=has-empty]");
 
+const loadedImages = LoadImages([
+  "image/1.png",
+  "image/2.png",
+  "image/3.png",
+  "image/4.png",
+  "image/5.png",
+  "image/6.png",
+  "image/7.png",
+  "image/8.png"
+]);
+
 const classroom: Classroom = new Classroom(
   "canvas",
   Number(rowSelector.value),
-  Number(colSelector.value)
+  Number(colSelector.value),
+  loadedImages
 );
 
 const handleChangeRow = event => {

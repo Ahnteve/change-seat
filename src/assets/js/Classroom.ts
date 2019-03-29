@@ -1,5 +1,6 @@
 import Student from "./Student";
 import Desk from "./Desk";
+import { GenerateRandom } from "./utils";
 
 class Classroom {
   private canvas: HTMLCanvasElement;
@@ -7,6 +8,7 @@ class Classroom {
   private image: HTMLImageElement;
   private diffx: number;
   private diffy: number;
+  private loadedImages;
 
   public static MAX_WIDTH: number = 1000;
   public static MAX_HEIGHT: number = 2000;
@@ -17,7 +19,12 @@ class Classroom {
   private row: number;
   private col: number;
 
-  constructor(id: string, row: number, col: number) {
+  constructor(
+    id: string,
+    row: number,
+    col: number,
+    loadedImages: HTMLImageElement[]
+  ) {
     this.canvas = <HTMLCanvasElement>document.getElementById(id);
     this.ctx = this.canvas.getContext("2d");
     this.image = new Image();
@@ -28,6 +35,7 @@ class Classroom {
     this.students = [];
     this.row = row;
     this.col = col;
+    this.loadedImages = loadedImages;
 
     this.setDesk(row, col);
 
@@ -40,7 +48,9 @@ class Classroom {
 
   createStudent() {
     const id: number = this.students.length + 1;
-    this.students.push(new Student(id, this.row));
+    this.students.push(
+      new Student(id, this.row, this.loadedImages[GenerateRandom(1, 7)])
+    );
     this.draw();
   }
 
@@ -78,52 +88,14 @@ class Classroom {
     standingStudents.sort(() => 0.5 - Math.random());
     const emptyDesks = this.desks.filter(desk => !desk.seated);
 
-    console.log(standingStudents, emptyDesks);
-
     if (hasEmpty) emptyDesks.sort(() => 0.5 - Math.random());
 
     emptyDesks.forEach((emptyDesk, index) => {
       if (index < standingStudents.length) {
-        console.log(standingStudents[index], emptyDesk);
         this.matchStudent(standingStudents[index], emptyDesk);
-        console.log(standingStudents[index], emptyDesk);
       }
     });
     this.draw();
-
-    // if (document.getElementById("empty").checked) {
-    //   while (temp < total) {
-    //     var random = generateRandom(0, students.length - 1);
-    //     if (students[random].seat == false) {
-    //       for (var i = 0; i < desks.length; i++) {
-    //         if (!desks[i].seat) {
-    //           students[random].seat = true;
-    //           students[random].deskId = i + 1;
-    //           students[random].x = desks[i].x;
-    //           students[random].y = desks[i].y + 15;
-    //           desks[i].studentId = students[random].id;
-    //           desks[i].seat = true;
-    //           temp++;
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   while (temp < total) {
-    //     var random1 = generateRandom(0, students.length - 1);
-    //     var random2 = generateRandom(0, desks.length - 1);
-    //     if (students[random1].seat == false && desks[random2].seat == false) {
-    //       students[random1].seat = true;
-    //       students[random1].deskId = random2 + 1;
-    //       students[random1].x = desks[random2].x;
-    //       students[random1].y = desks[random2].y + 15;
-    //       desks[random2].studentId = students[random1].id;
-    //       desks[random2].seat = true;
-    //       temp++;
-    //     }
-    //   }
-    // }
   }
 
   draw(): void {
@@ -140,6 +112,7 @@ class Classroom {
 
   reset(): void {
     this.students.forEach(student => student.reset(this.row));
+    this.desks.forEach(desk => desk.reset());
     this.draw();
   }
 
@@ -151,8 +124,11 @@ class Classroom {
       this.students.forEach((student, index) => {
         if (student.mouseover(mx, my)) {
           if (student.seated) {
+            let seatDesk = this.desks.filter(
+              desk => desk.id === student.seatDesk
+            )[0];
+            seatDesk.seated = false;
             student.standUp();
-            this.desks[student.seatDesk - 1].seated = false;
           }
           this.diffx = mx - student.x;
           this.diffy = my - student.y;
