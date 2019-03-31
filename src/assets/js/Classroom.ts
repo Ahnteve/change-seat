@@ -193,6 +193,17 @@ class Classroom {
     this.canvas.removeEventListener("mousemove", this.handleDrag);
     this.canvas.removeEventListener("mouseup", this.handleDrop);
   }
+
+  getInfo(): Object {
+    return {
+      isSet: this.isSet,
+      count: this.count,
+      row: this.row,
+      col: this.col,
+      students: this.students,
+      desks: this.desks
+    };
+  }
 }
 
 export default Classroom;
