@@ -1,4 +1,5 @@
 import * as moment from "moment";
+import axios from "axios";
 
 import Classroom from "./Classroom";
 import { LoadImages } from "./utils";
@@ -18,6 +19,9 @@ const studentName: HTMLInputElement = document.querySelector(
 const hasEmpty: HTMLInputElement = document.querySelector("[name=has-empty]");
 const studentList: Element = document.querySelector(".js-student-list");
 const saveButton: HTMLButtonElement = document.querySelector(".js-save-seat");
+const loadFileSelector: HTMLInputElement = document.querySelector(
+  ".js-load-seat"
+);
 
 const loadedImages = LoadImages([
   "image/desk.png",
@@ -82,16 +86,30 @@ const handleClickAdd = () => {
   addStudentToTable(id, name);
 };
 
-const handleClickSave = () => {
-  const classroomInfo = JSON.stringify(classroom.getInfo());
-  const now = moment().format("YYYYMMDD");
+const handleClickSave = (): void => {
+  const classroomInfo: string = JSON.stringify(classroom.getInfo());
+  const now: string = moment().format("YYYYMMDD");
 
-  const a = document.createElement("a");
+  const a: HTMLAnchorElement = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([classroomInfo]));
   a.download = `${now}.seat`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+};
+
+const handleChangeFile = (event): void => {
+  const handleLoad = event => {
+    const loadedData = JSON.parse(event.target.result);
+    classroom.loadData(loadedData);
+    loadedData.students.forEach(student => {
+      addStudentToTable(student.id, student.name);
+    });
+  };
+
+  var reader = new FileReader();
+  reader.readAsText(event.target.files[0], "UTF-8");
+  reader.addEventListener("load", handleLoad);
 };
 
 rowSelector.addEventListener("change", handleChangeRow);
@@ -102,3 +120,4 @@ setButton.addEventListener("click", handleClickSet);
 
 addButton.addEventListener("click", handleClickAdd);
 saveButton.addEventListener("click", handleClickSave);
+loadFileSelector.addEventListener("change", handleChangeFile);

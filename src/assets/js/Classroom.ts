@@ -48,18 +48,24 @@ class Classroom {
     return this.count++;
   }
 
-  createStudent(name: string): number {
-    const id: number = this.getId();
-    this.students.push(
-      new Student(
-        id,
-        name,
-        this.row,
-        this.loadedImages[`image/${GenerateRandom(1, 7)}.png`]
-      )
-    );
-    this.draw();
-    return id;
+  createStudent(name: string): number;
+  createStudent(students: Array<Student>): void;
+  createStudent(x: string | Array<Student>): any {
+    if (typeof x === "string") {
+      const id: number = this.getId();
+      this.students.push(
+        new Student(
+          id,
+          x,
+          this.row,
+          this.loadedImages[`image/${GenerateRandom(1, 7)}.png`]
+        )
+      );
+      this.draw();
+      return id;
+    } else {
+      x.forEach(student => this.students.push(student));
+    }
   }
 
   removeStudent(id: number): void {
@@ -203,6 +209,32 @@ class Classroom {
       students: this.students,
       desks: this.desks
     };
+  }
+
+  loadData(data): void {
+    const { row, col, count, isSet } = data;
+    this.row = row;
+    this.col = col;
+    this.count = count;
+    this.isSet = isSet;
+
+    const students = data.students.map(student => {
+      const { id, name, x, y, seated, seatDesk } = student;
+      const loadedStudent = new Student(
+        id,
+        name,
+        this.row,
+        this.loadedImages[`image/${GenerateRandom(1, 7)}.png`]
+      );
+      loadedStudent.x = x;
+      loadedStudent.y = y;
+      loadedStudent.seated = seated;
+      loadedStudent.seatDesk = seatDesk;
+      return loadedStudent;
+    });
+
+    this.students = students;
+    this.setDesk(this.row, this.col);
   }
 }
 
