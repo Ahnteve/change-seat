@@ -7,7 +7,13 @@
   "license": "MIT",
   "scripts": {
     "dev:start": "nodemon --exec babel-node src/app.js",
-    "dev:assets": "webpack -w"
+    "dev:assets": "webpack -w",
+    "start": "node dist/app.js",
+    "build:assets": "cd src && set WEBPACK_ENV=production&& webpack",
+    "build:server": "babel src --out-dir dist --ignore src/assets,src/static,webpack.config.js",
+    "copyAll": "cp -R src/static dist",
+    "build": "yarn run build:server && yarn run build:assets && yarn run copyAll",
+    "prebuild": "rm -rf build"
   },
   "dependencies": {
     "@types/es6-promise": "^3.3.0",
