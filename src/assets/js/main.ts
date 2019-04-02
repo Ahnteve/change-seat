@@ -1,42 +1,41 @@
-import * as moment from "moment";
-import axios from "axios";
+import * as moment from 'moment';
 
-import Classroom from "./Classroom";
-import { LoadImages } from "./utils";
+import Classroom from './Classroom';
+import { LoadImages } from './utils';
 
 const rowSelector: HTMLInputElement = document.querySelector(
-  ".js-row-selector"
+  '.js-row-selector'
 );
 const colSelector: HTMLInputElement = document.querySelector(
-  ".js-col-selector"
+  '.js-col-selector'
 );
-const resetButton: Element = document.querySelector(".js-reset-button");
-const setButton: Element = document.querySelector(".js-set-button");
-const addButton: Element = document.querySelector(".js-add-button");
+const resetButton: Element = document.querySelector('.js-reset-button');
+const setButton: Element = document.querySelector('.js-set-button');
+const addButton: Element = document.querySelector('.js-add-button');
 const studentName: HTMLInputElement = document.querySelector(
-  ".js-student-name"
+  '.js-student-name'
 );
-const hasEmpty: HTMLInputElement = document.querySelector("[name=has-empty]");
-const studentList: Element = document.querySelector(".js-student-list");
-const saveButton: HTMLButtonElement = document.querySelector(".js-save-seat");
+const hasEmpty: HTMLInputElement = document.querySelector('[name=has-empty]');
+const studentList: Element = document.querySelector('.js-student-list');
+const saveButton: HTMLButtonElement = document.querySelector('.js-save-seat');
 const loadFileSelector: HTMLInputElement = document.querySelector(
-  ".js-load-seat"
+  '.js-load-seat'
 );
 
 const loadedImages = LoadImages([
-  "image/desk.png",
-  "image/1.png",
-  "image/2.png",
-  "image/3.png",
-  "image/4.png",
-  "image/5.png",
-  "image/6.png",
-  "image/7.png",
-  "image/8.png"
+  'image/desk.png',
+  'image/1.png',
+  'image/2.png',
+  'image/3.png',
+  'image/4.png',
+  'image/5.png',
+  'image/6.png',
+  'image/7.png',
+  'image/8.png'
 ]);
 
 const classroom: Classroom = new Classroom(
-  "canvas",
+  'canvas',
   Number(rowSelector.value),
   Number(colSelector.value),
   loadedImages
@@ -47,10 +46,10 @@ const handleRemove = (id: number): void => {
 };
 
 const addStudentToTable = (id: number, name: string): void => {
-  const li = document.createElement("li");
-  const removeButton = document.createElement("button");
-  removeButton.innerHTML = "삭제";
-  removeButton.addEventListener("click", event => {
+  const li = document.createElement('li');
+  const removeButton = document.createElement('button');
+  removeButton.innerHTML = '삭제';
+  removeButton.addEventListener('click', event => {
     handleRemove(id);
     const currentElement = <Element>event.target;
     currentElement.parentElement.remove();
@@ -80,17 +79,31 @@ const handleClickSet = () => {
 
 const handleClickAdd = () => {
   const name: string = studentName.value.trim();
-  if (name === "") return;
+  if (name === '') return;
   const id: number = classroom.createStudent(name);
-  studentName.value = "";
+  studentName.value = '';
+  studentName.focus();
+
   addStudentToTable(id, name);
+};
+
+const handleEnterAdd = event => {
+  if (event.keyCode === 13) {
+    const name: string = event.target.value.trim();
+    if (name === '') return;
+    const id: number = classroom.createStudent(name);
+    studentName.value = '';
+    studentName.focus();
+
+    addStudentToTable(id, name);
+  }
 };
 
 const handleClickSave = (): void => {
   const classroomInfo: string = JSON.stringify(classroom.getInfo());
-  const now: string = moment().format("YYYYMMDD");
+  const now: string = moment().format('YYYYMMDD');
 
-  const a: HTMLAnchorElement = document.createElement("a");
+  const a: HTMLAnchorElement = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([classroomInfo]));
   a.download = `${now}.seat`;
   document.body.appendChild(a);
@@ -107,17 +120,18 @@ const handleChangeFile = (event): void => {
     });
   };
 
-  var reader = new FileReader();
-  reader.readAsText(event.target.files[0], "UTF-8");
-  reader.addEventListener("load", handleLoad);
+  let reader = new FileReader();
+  reader.readAsText(event.target.files[0], 'UTF-8');
+  reader.addEventListener('load', handleLoad);
 };
 
-rowSelector.addEventListener("change", handleChangeRow);
-colSelector.addEventListener("change", handleChangeCol);
+rowSelector.addEventListener('change', handleChangeRow);
+colSelector.addEventListener('change', handleChangeCol);
 
-resetButton.addEventListener("click", handleClickReset);
-setButton.addEventListener("click", handleClickSet);
+resetButton.addEventListener('click', handleClickReset);
+setButton.addEventListener('click', handleClickSet);
 
-addButton.addEventListener("click", handleClickAdd);
-saveButton.addEventListener("click", handleClickSave);
-loadFileSelector.addEventListener("change", handleChangeFile);
+studentName.addEventListener('keyup', handleEnterAdd);
+addButton.addEventListener('click', handleClickAdd);
+saveButton.addEventListener('click', handleClickSave);
+loadFileSelector.addEventListener('change', handleChangeFile);
