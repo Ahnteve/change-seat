@@ -1,6 +1,6 @@
-import Student from "./Student";
-import Desk from "./Desk";
-import { GenerateRandom } from "./utils";
+import Student from './Student';
+import Desk from './Desk';
+import { GenerateRandom } from './utils';
 
 class Classroom {
   private canvas: HTMLCanvasElement;
@@ -11,6 +11,7 @@ class Classroom {
   private loadedImages: Object;
   private isSet: boolean;
   private count: number = 0;
+  private setMode: boolean;
 
   public static MAX_WIDTH: number = 1000;
   public static MAX_HEIGHT: number = 2000;
@@ -23,17 +24,18 @@ class Classroom {
 
   constructor(id: string, row: number, col: number, loadedImages: Object) {
     this.canvas = <HTMLCanvasElement>document.getElementById(id);
-    this.ctx = this.canvas.getContext("2d");
+    this.ctx = this.canvas.getContext('2d');
     this.image = new Image();
-    this.image.addEventListener("load", () => {
+    this.image.addEventListener('load', () => {
       this.draw();
     });
-    this.image.src = "./image/class.png";
+    this.image.src = './image/class.png';
     this.students = [];
     this.row = row;
     this.col = col;
     this.loadedImages = loadedImages;
     this.isSet = false;
+    this.setMode = false;
 
     this.setDesk(row, col);
 
@@ -41,7 +43,7 @@ class Classroom {
     this.handleDrag = this.handleDrag.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
 
-    this.canvas.addEventListener("mousedown", this.handleStartDrag);
+    this.canvas.addEventListener('mousedown', this.handleStartDrag);
   }
 
   getId(): number {
@@ -51,7 +53,7 @@ class Classroom {
   createStudent(name: string): number;
   createStudent(students: Array<Student>): void;
   createStudent(x: string | Array<Student>): any {
-    if (typeof x === "string") {
+    if (typeof x === 'string') {
       const id: number = this.getId();
       this.students.push(
         new Student(
@@ -85,7 +87,7 @@ class Classroom {
             col * i + (j + 1),
             this.canvas.width / 2 + (j - col / 2) * Desk.WIDTH,
             250 + i * Desk.HEIGHT,
-            this.loadedImages["image/desk.png"]
+            this.loadedImages['image/desk.png']
           )
         );
       }
@@ -130,7 +132,8 @@ class Classroom {
       Classroom.MAX_HEIGHT
     );
     if (this.desks) this.desks.forEach(desk => desk.draw(this.ctx));
-    if (this.students) this.students.forEach(student => student.draw(this.ctx));
+    if (this.students && !this.setMode)
+      this.students.forEach(student => student.draw(this.ctx));
   }
 
   reset(): void {
@@ -143,7 +146,7 @@ class Classroom {
     const mx: number = event.offsetX;
     const my: number = event.offsetY;
 
-    if (this.students)
+    if (this.students && !this.setMode) {
       this.students.forEach((student, index) => {
         if (student.mouseover(mx, my)) {
           if (student.seated) {
@@ -159,45 +162,69 @@ class Classroom {
           this.students.splice(index, 1);
           this.students.push(item);
 
-          this.canvas.addEventListener("mousemove", this.handleDrag);
-          this.canvas.addEventListener("mouseup", this.handleDrop);
+          this.canvas.addEventListener('mousemove', this.handleDrag);
+          this.canvas.addEventListener('mouseup', this.handleDrop);
         }
       });
+    }
+
+    if (this.desks && this.setMode) {
+      this.desks.forEach((desk, index) => {
+        if (desk.mouseover(mx, my)) {
+          this.diffx = mx - desk.x;
+          this.diffy = my - desk.y;
+          let item = desk;
+          this.desks.splice(index, 1);
+          this.desks.push(item);
+
+          this.canvas.addEventListener('mousemove', this.handleDrag);
+          this.canvas.addEventListener('mouseup', this.handleDrop);
+        }
+      });
+    }
   }
 
   handleDrag(event: MouseEvent) {
     const mx: number = event.offsetX;
     const my: number = event.offsetY;
 
-    const selectedStudent: Student = this.students[this.students.length - 1];
-    selectedStudent.x = mx - this.diffx;
-    selectedStudent.y = my - this.diffy;
-    this.draw();
+    if (!this.setMode) {
+      const selectedStudent: Student = this.students[this.students.length - 1];
+      selectedStudent.x = mx - this.diffx;
+      selectedStudent.y = my - this.diffy;
+      this.draw();
+    } else {
+      const selectedDesk: Desk = this.desks[this.desks.length - 1];
+      selectedDesk.x = mx - this.diffx;
+      selectedDesk.y = my - this.diffy;
+      this.draw();
+    }
   }
 
   handleDrop(event: MouseEvent) {
     const mx: number = event.offsetX;
     const my: number = event.offsetY;
+    if (!this.setMode) {
+      const selectedStudent: Student = this.students[this.students.length - 1];
 
-    const selectedStudent: Student = this.students[this.students.length - 1];
-
-    this.desks.forEach(desk => {
-      if (desk.mouseover(mx, my)) {
-        if (!desk.seated) {
-          selectedStudent.seated = true;
-          selectedStudent.x = desk.x;
-          selectedStudent.y = desk.y + 15;
-          selectedStudent.seatDesk = desk.id;
-          desk.seated = true;
-          desk.seatStudent = selectedStudent.id;
+      this.desks.forEach(desk => {
+        if (desk.mouseover(mx, my)) {
+          if (!desk.seated) {
+            selectedStudent.seated = true;
+            selectedStudent.x = desk.x;
+            selectedStudent.y = desk.y + 15;
+            selectedStudent.seatDesk = desk.id;
+            desk.seated = true;
+            desk.seatStudent = selectedStudent.id;
+          }
         }
-      }
-    });
+      });
 
-    this.draw();
+      this.draw();
+    }
 
-    this.canvas.removeEventListener("mousemove", this.handleDrag);
-    this.canvas.removeEventListener("mouseup", this.handleDrop);
+    this.canvas.removeEventListener('mousemove', this.handleDrag);
+    this.canvas.removeEventListener('mouseup', this.handleDrop);
   }
 
   getInfo(): Object {
@@ -235,6 +262,12 @@ class Classroom {
 
     this.students = students;
     this.setDesk(this.row, this.col);
+  }
+
+  changeMode(): void {
+    this.reset();
+    this.setMode = !this.setMode;
+    this.draw();
   }
 }
 

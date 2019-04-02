@@ -21,6 +21,9 @@ const saveButton: HTMLButtonElement = document.querySelector('.js-save-seat');
 const loadFileSelector: HTMLInputElement = document.querySelector(
   '.js-load-seat'
 );
+const changeModeButton: HTMLInputElement = document.querySelector(
+  '.js-change-mode'
+);
 
 const loadedImages = LoadImages([
   'image/desk.png',
@@ -134,4 +137,7 @@ setButton.addEventListener('click', handleClickSet);
 studentName.addEventListener('keyup', handleEnterAdd);
 addButton.addEventListener('click', handleClickAdd);
 saveButton.addEventListener('click', handleClickSave);
+changeModeButton.addEventListener('click', () => {
+  classroom.changeMode();
+});
 loadFileSelector.addEventListener('change', handleChangeFile);
