@@ -1,5 +1,6 @@
-import * as moment from 'moment';
+import '../scss/main.scss';
 
+import * as moment from 'moment';
 import Classroom from './Classroom';
 import { LoadImages } from './utils';
 
@@ -24,6 +25,9 @@ const loadFileSelector: HTMLInputElement = document.querySelector(
 const changeModeButton: HTMLInputElement = document.querySelector(
   '.js-change-mode'
 );
+const createDeskButton: HTMLInputElement = document.querySelector(
+  '.js-create-desk'
+);
 
 const loadedImages = LoadImages([
   'image/desk.png',
@@ -37,12 +41,7 @@ const loadedImages = LoadImages([
   'image/8.png'
 ]);
 
-const classroom: Classroom = new Classroom(
-  'canvas',
-  Number(rowSelector.value),
-  Number(colSelector.value),
-  loadedImages
-);
+const classroom: Classroom = new Classroom('.canvas', loadedImages);
 
 const handleRemove = (id: number): void => {
   classroom.removeStudent(id);
@@ -141,3 +140,6 @@ changeModeButton.addEventListener('click', () => {
   classroom.changeMode();
 });
 loadFileSelector.addEventListener('change', handleChangeFile);
+createDeskButton.addEventListener('click', () => {
+  classroom.createDesk();
+});

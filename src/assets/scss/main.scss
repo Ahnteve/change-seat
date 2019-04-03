@@ -1,0 +1,53 @@
+@import '../../../node_modules/open-color/open-color.scss';
+@import './reset.scss';
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  .canvas {
+    margin-right: 10px;
+  }
+  .student-utils {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    height: 650px;
+
+    .add-button {
+      background-color: $oc-green-6;
+      color: white;
+      font-weight: 600;
+      border-radius: 5px;
+      &:hover {
+        background-color: $oc-green-8;
+      }
+    }
+
+    .student-list {
+      overflow-y: scroll;
+      height: 100%;
+      background-color: #fff;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        padding: 0 2px;
+      }
+
+      button {
+        background-color: $oc-red-6;
+        color: white;
+        font-weight: 600;
+        font-size: 12px;
+        border-radius: 5px;
+      }
+    }
+
+    .student-input {
+      display: flex;
+    }
+  }
+}

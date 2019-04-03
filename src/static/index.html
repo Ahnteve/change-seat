@@ -4,51 +4,54 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="UTF-8" />
 		<title>Simple&Cute Change Seat😘</title>
-		<style>
-			canvas {
-				float: left;
-			}
-		</style>
+		<link rel="stylesheet" href="/style.css">
 	</head>
 	<body>
-		<canvas id="canvas" width="1000" height="650"></canvas>
-		<button class="reset-button js-reset-button">다시</button>
-		<button class="set-button js-set-button">자리배치</button>
+		<div class="App">
+			<div class="wrapper">
+				<canvas class="canvas" width="1000" height="650"></canvas>
+				<div class="student-utils">
+					<div class="student-input">
+						<input type="text" class="js-student-name" placeholder="이름">
+						<input type="button" value="추가" class="add-button js-add-button" />
+					</div>
+					<ul class="student-list js-student-list"></ul>
+				</div>
+			</div>
+			
+			<button class="reset-button js-reset-button">다시</button>
+			<button class="set-button js-set-button">자리배치</button>
 
-		행 :
-		<select class="js-row-selector">
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-		</select>
-		열 :
-		<select class="js-col-selector">
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-		</select>
-		빈자리 있음 <input type="checkbox" name="has-empty" /><br>
-		<button class="js-save-seat">자리 저장</button><br>
-		<input type="file" class="js-load-seat"><br>
-		<button class="js-change-mode">설정</button>
-
-		<input type="text" class="js-student-name" placeholder="이름">
-		<input type="button" value="추가" class="add-button js-add-button" /><br>
-		<ul class="js-student-list"></ul>
-
-		<span id="studentCount"> </span>
+			행 :
+			<select class="js-row-selector">
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
+			열 :
+			<select class="js-col-selector">
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
+			빈자리 있음 <input type="checkbox" name="has-empty" /><br>
+			<button class="js-save-seat">자리 저장</button><br>
+			<input type="file" class="js-load-seat"><br>
+			<button class="js-change-mode">설정</button>
+			<button class="js-create-desk">책상추가</button>
+		</div>
 		<script src="/main.js"></script>
 	</body>
 </html>

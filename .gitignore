@@ -1,5 +1,6 @@
 node_modules
 
 src/static/main.js
+src/static/style.css
 temp.html
 tmp

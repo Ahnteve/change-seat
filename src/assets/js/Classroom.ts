@@ -22,8 +22,8 @@ class Classroom {
   private row: number;
   private col: number;
 
-  constructor(id: string, row: number, col: number, loadedImages: Object) {
-    this.canvas = <HTMLCanvasElement>document.getElementById(id);
+  constructor(selector: string, loadedImages: Object) {
+    this.canvas = <HTMLCanvasElement>document.querySelector(selector);
     this.ctx = this.canvas.getContext('2d');
     this.image = new Image();
     this.image.addEventListener('load', () => {
@@ -31,13 +31,12 @@ class Classroom {
     });
     this.image.src = './image/class.png';
     this.students = [];
-    this.row = row;
-    this.col = col;
+    this.desks = [];
+    this.row = 1;
+    this.col = 1;
     this.loadedImages = loadedImages;
     this.isSet = false;
     this.setMode = false;
-
-    this.setDesk(row, col);
 
     this.handleStartDrag = this.handleStartDrag.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
@@ -67,6 +66,28 @@ class Classroom {
       return id;
     } else {
       x.forEach(student => this.students.push(student));
+    }
+  }
+
+  createDesk(): number;
+  createDesk(desks: Array<Desk>): void;
+  createDesk(desks?: Array<Desk>): any {
+    if (!desks) {
+      let x: number, y: number;
+
+      if (this.desks.length !== 0) {
+        const lastDesk: Desk = this.desks[this.desks.length - 1];
+        x = lastDesk.x + 10;
+        y = lastDesk.y + 10;
+      } else {
+        x = this.canvas.width / 2;
+        y = this.canvas.height / 2;
+      }
+
+      const id = this.desks.length;
+      this.desks.push(new Desk(id, x, y, this.loadedImages['image/desk.png']));
+      this.draw();
+      return id;
     }
   }
 
@@ -147,40 +168,46 @@ class Classroom {
     const my: number = event.offsetY;
 
     if (this.students && !this.setMode) {
-      this.students.forEach((student, index) => {
-        if (student.mouseover(mx, my)) {
-          if (student.seated) {
-            let seatDesk = this.desks.filter(
-              desk => desk.id === student.seatDesk
-            )[0];
-            seatDesk.seated = false;
-            student.standUp();
-          }
-          this.diffx = mx - student.x;
-          this.diffy = my - student.y;
-          let item = student;
-          this.students.splice(index, 1);
-          this.students.push(item);
+      const selectedStudents = this.students.filter(student =>
+        student.mouseover(mx, my)
+      );
 
-          this.canvas.addEventListener('mousemove', this.handleDrag);
-          this.canvas.addEventListener('mouseup', this.handleDrop);
+      if (selectedStudents.length !== 0) {
+        const selectedStudent = selectedStudents.pop();
+        this.students = this.students.filter(
+          student => selectedStudent.id !== student.id
+        );
+
+        if (selectedStudent.seated) {
+          let seatedDesk = this.desks.filter(
+            desk => desk.id === selectedStudent.seatDesk
+          )[0];
+          seatedDesk.seated = false;
+          selectedStudent.standUp();
         }
-      });
+
+        this.diffx = mx - selectedStudent.x;
+        this.diffy = my - selectedStudent.y;
+        this.students.push(selectedStudent);
+
+        this.canvas.addEventListener('mousemove', this.handleDrag);
+        this.canvas.addEventListener('mouseup', this.handleDrop);
+      }
     }
 
     if (this.desks && this.setMode) {
-      this.desks.forEach((desk, index) => {
-        if (desk.mouseover(mx, my)) {
-          this.diffx = mx - desk.x;
-          this.diffy = my - desk.y;
-          let item = desk;
-          this.desks.splice(index, 1);
-          this.desks.push(item);
+      const selectedDesks = this.desks.filter(desk => desk.mouseover(mx, my));
 
-          this.canvas.addEventListener('mousemove', this.handleDrag);
-          this.canvas.addEventListener('mouseup', this.handleDrop);
-        }
-      });
+      if (selectedDesks.length !== 0) {
+        const selectedDesk = selectedDesks.pop();
+        this.desks = this.desks.filter(desk => desk.id !== selectedDesk.id);
+        this.diffx = mx - selectedDesk.x;
+        this.diffy = my - selectedDesk.y;
+        this.desks.push(selectedDesk);
+
+        this.canvas.addEventListener('mousemove', this.handleDrag);
+        this.canvas.addEventListener('mouseup', this.handleDrop);
+      }
     }
   }
 
