@@ -1,4 +1,4 @@
-import { GenerateRandom } from "./utils";
+import { GenerateRandom } from './utils';
 
 class Student {
   public id: number;
@@ -12,12 +12,29 @@ class Student {
   public static WIDTH: number = 64;
   public static HEIGHT: number = 100;
 
-  constructor(id: number, name: string, row: number, image: HTMLImageElement) {
+  constructor(
+    id: number,
+    name: string,
+    row: number,
+    image: HTMLImageElement,
+    x?: number,
+    y?: number,
+    seated?: boolean,
+    seatDesk?: number
+  ) {
     this.id = id;
     this.name = name;
-    this.x = GenerateRandom(0, 936);
-    this.y = GenerateRandom(250 + row * 120, 250 + row * 120 + 50);
+    if (x && y) {
+      this.x = x;
+      this.y = y;
+    } else {
+      console.log('random');
+      this.x = GenerateRandom(0, 936);
+      this.y = GenerateRandom(250 + row * 120, 250 + row * 120 + 50);
+    }
     this.image = image;
+    this.seated = seated;
+    this.seatDesk = seatDesk;
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
@@ -32,8 +49,8 @@ class Student {
       Student.WIDTH,
       Student.HEIGHT
     );
-    ctx.font = "15px 나눔고딕";
-    ctx.textAlign = "center";
+    ctx.font = '15px 나눔고딕';
+    ctx.textAlign = 'center';
     ctx.fillText(this.name, this.x + 32, this.y);
   }
 

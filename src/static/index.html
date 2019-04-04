@@ -13,44 +13,23 @@
 				<div class="student-utils">
 					<div class="student-input">
 						<input type="text" class="js-student-name" placeholder="이름">
-						<input type="button" value="추가" class="add-button js-add-button" />
+						<input type="button" value="+" class="add-button js-add-button" />
 					</div>
 					<ul class="student-list js-student-list"></ul>
 				</div>
 			</div>
-			
-			<button class="reset-button js-reset-button">다시</button>
-			<button class="set-button js-set-button">자리배치</button>
-
-			행 :
-			<select class="js-row-selector">
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-			</select>
-			열 :
-			<select class="js-col-selector">
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-			</select>
-			빈자리 있음 <input type="checkbox" name="has-empty" /><br>
-			<button class="js-save-seat">자리 저장</button><br>
-			<input type="file" class="js-load-seat"><br>
-			<button class="js-change-mode">설정</button>
-			<button class="js-create-desk">책상추가</button>
+			<div class="seat-utils js-seat-utils">
+				<button class="button set-button js-set-button">자리배치</button>
+				<button class="button reset-button js-reset-button">다시</button>
+				<!-- 빈자리 있음 <input type="checkbox" name="has-empty" /> -->
+				<button class="button save-seat-button js-save-seat">자리 저장</button>
+				<label for="file" class="button">불러오기</label>
+				<input type="file" class="load-seat js-load-seat" id="file">
+			</div>
+			<div class="setting-utils">
+				<button class="button blue js-change-mode">설정</button>
+				<button class="button blue js-create-desk hidden">책상추가</button>
+			</div>
 		</div>
 		<script src="/main.js"></script>
 	</body>

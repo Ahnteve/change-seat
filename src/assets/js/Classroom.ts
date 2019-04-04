@@ -88,32 +88,14 @@ class Classroom {
       this.desks.push(new Desk(id, x, y, this.loadedImages['image/desk.png']));
       this.draw();
       return id;
+    } else {
+      desks.forEach(desk => this.desks.push(desk));
     }
   }
 
   removeStudent(id: number): void {
+    const removeStudent = this.students.filter(student => student.id == id)[0];
     this.students = this.students.filter(student => student.id !== id);
-    this.draw();
-  }
-
-  setDesk(row: number, col: number): void {
-    this.desks = [];
-    this.row = row;
-    this.col = col;
-
-    for (var i = 0; i < row; i++) {
-      for (var j = 0; j < col; j++) {
-        this.desks.push(
-          new Desk(
-            col * i + (j + 1),
-            this.canvas.width / 2 + (j - col / 2) * Desk.WIDTH,
-            250 + i * Desk.HEIGHT,
-            this.loadedImages['image/desk.png']
-          )
-        );
-      }
-    }
-    this.canvas.height = 250 + row * 120 + 200;
     this.draw();
   }
 
@@ -167,46 +149,48 @@ class Classroom {
     const mx: number = event.offsetX;
     const my: number = event.offsetY;
 
-    if (this.students && !this.setMode) {
-      const selectedStudents = this.students.filter(student =>
-        student.mouseover(mx, my)
-      );
-
-      if (selectedStudents.length !== 0) {
-        const selectedStudent = selectedStudents.pop();
-        this.students = this.students.filter(
-          student => selectedStudent.id !== student.id
+    if (event.which == 1) {
+      if (this.students && !this.setMode) {
+        const selectedStudents = this.students.filter(student =>
+          student.mouseover(mx, my)
         );
 
-        if (selectedStudent.seated) {
-          let seatedDesk = this.desks.filter(
-            desk => desk.id === selectedStudent.seatDesk
-          )[0];
-          seatedDesk.seated = false;
-          selectedStudent.standUp();
+        if (selectedStudents.length !== 0) {
+          const selectedStudent = selectedStudents.pop();
+          this.students = this.students.filter(
+            student => selectedStudent.id !== student.id
+          );
+
+          if (selectedStudent.seated) {
+            let seatedDesk = this.desks.filter(
+              desk => desk.id === selectedStudent.seatDesk
+            )[0];
+            seatedDesk.seated = false;
+            selectedStudent.standUp();
+          }
+
+          this.diffx = mx - selectedStudent.x;
+          this.diffy = my - selectedStudent.y;
+          this.students.push(selectedStudent);
+
+          this.canvas.addEventListener('mousemove', this.handleDrag);
+          this.canvas.addEventListener('mouseup', this.handleDrop);
         }
-
-        this.diffx = mx - selectedStudent.x;
-        this.diffy = my - selectedStudent.y;
-        this.students.push(selectedStudent);
-
-        this.canvas.addEventListener('mousemove', this.handleDrag);
-        this.canvas.addEventListener('mouseup', this.handleDrop);
       }
-    }
 
-    if (this.desks && this.setMode) {
-      const selectedDesks = this.desks.filter(desk => desk.mouseover(mx, my));
+      if (this.desks && this.setMode) {
+        const selectedDesks = this.desks.filter(desk => desk.mouseover(mx, my));
 
-      if (selectedDesks.length !== 0) {
-        const selectedDesk = selectedDesks.pop();
-        this.desks = this.desks.filter(desk => desk.id !== selectedDesk.id);
-        this.diffx = mx - selectedDesk.x;
-        this.diffy = my - selectedDesk.y;
-        this.desks.push(selectedDesk);
+        if (selectedDesks.length !== 0) {
+          const selectedDesk = selectedDesks.pop();
+          this.desks = this.desks.filter(desk => desk.id !== selectedDesk.id);
+          this.diffx = mx - selectedDesk.x;
+          this.diffy = my - selectedDesk.y;
+          this.desks.push(selectedDesk);
 
-        this.canvas.addEventListener('mousemove', this.handleDrag);
-        this.canvas.addEventListener('mouseup', this.handleDrop);
+          this.canvas.addEventListener('mousemove', this.handleDrag);
+          this.canvas.addEventListener('mouseup', this.handleDrop);
+        }
       }
     }
   }
@@ -274,27 +258,41 @@ class Classroom {
 
     const students = data.students.map(student => {
       const { id, name, x, y, seated, seatDesk } = student;
-      const loadedStudent = new Student(
+      return new Student(
         id,
         name,
         this.row,
-        this.loadedImages[`image/${GenerateRandom(1, 7)}.png`]
+        this.loadedImages[`image/${GenerateRandom(1, 7)}.png`],
+        x,
+        y,
+        seated,
+        seatDesk
       );
-      loadedStudent.x = x;
-      loadedStudent.y = y;
-      loadedStudent.seated = seated;
-      loadedStudent.seatDesk = seatDesk;
-      return loadedStudent;
+    });
+
+    const desks = data.desks.map(desk => {
+      const { id, x, y, seated, seatStudent } = desk;
+      return new Desk(
+        id,
+        x,
+        y,
+        this.loadedImages[`image/desk.png`],
+        seated,
+        seatStudent
+      );
     });
 
     this.students = students;
-    this.setDesk(this.row, this.col);
+    this.desks = desks;
+
+    this.draw();
   }
 
-  changeMode(): void {
+  changeMode(): boolean {
     this.reset();
     this.setMode = !this.setMode;
     this.draw();
+    return this.setMode;
   }
 }
 

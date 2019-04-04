@@ -4,12 +4,6 @@ import * as moment from 'moment';
 import Classroom from './Classroom';
 import { LoadImages } from './utils';
 
-const rowSelector: HTMLInputElement = document.querySelector(
-  '.js-row-selector'
-);
-const colSelector: HTMLInputElement = document.querySelector(
-  '.js-col-selector'
-);
 const resetButton: Element = document.querySelector('.js-reset-button');
 const setButton: Element = document.querySelector('.js-set-button');
 const addButton: Element = document.querySelector('.js-add-button');
@@ -28,6 +22,7 @@ const changeModeButton: HTMLInputElement = document.querySelector(
 const createDeskButton: HTMLInputElement = document.querySelector(
   '.js-create-desk'
 );
+const seatUtils: HTMLElement = document.querySelector('.js-seat-utils');
 
 const loadedImages = LoadImages([
   'image/desk.png',
@@ -61,15 +56,6 @@ const addStudentToTable = (id: number, name: string): void => {
   li.appendChild(removeButton);
 
   studentList.appendChild(li);
-};
-
-const handleChangeRow = event => {
-  classroom.setDesk(event.target.value, Number(colSelector.value));
-  classroom.reset();
-};
-const handleChangeCol = event => {
-  classroom.setDesk(Number(rowSelector.value), event.target.value);
-  classroom.reset();
 };
 
 const handleClickReset = () => {
@@ -127,9 +113,6 @@ const handleChangeFile = (event): void => {
   reader.addEventListener('load', handleLoad);
 };
 
-rowSelector.addEventListener('change', handleChangeRow);
-colSelector.addEventListener('change', handleChangeCol);
-
 resetButton.addEventListener('click', handleClickReset);
 setButton.addEventListener('click', handleClickSet);
 
@@ -137,7 +120,10 @@ studentName.addEventListener('keyup', handleEnterAdd);
 addButton.addEventListener('click', handleClickAdd);
 saveButton.addEventListener('click', handleClickSave);
 changeModeButton.addEventListener('click', () => {
-  classroom.changeMode();
+  let setMode: boolean = classroom.changeMode();
+
+  if (setMode) seatUtils.classList.add('hidden');
+  else seatUtils.classList.remove('hidden');
 });
 loadFileSelector.addEventListener('change', handleChangeFile);
 createDeskButton.addEventListener('click', () => {

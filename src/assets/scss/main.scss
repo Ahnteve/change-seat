@@ -1,11 +1,41 @@
-@import '../../../node_modules/open-color/open-color.scss';
+@import '~open-color/open-color';
 @import './reset.scss';
+
+.App {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 80%;
+  margin: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.button {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 3px;
+  background-color: $oc-green-6;
+  &:hover {
+    background-color: $oc-green-8;
+  }
+
+  &.blue {
+    background-color: $oc-blue-6;
+    &:hover {
+      background-color: $oc-blue-8;
+    }
+  }
+}
 
 .wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
+  margin-bottom: 10px;
+  justify-content: space-between;
   .canvas {
     margin-right: 10px;
   }
@@ -15,26 +45,32 @@
     align-self: stretch;
     height: 650px;
 
-    .add-button {
-      background-color: $oc-green-6;
-      color: white;
-      font-weight: 600;
-      border-radius: 5px;
-      &:hover {
-        background-color: $oc-green-8;
-      }
-    }
+    width: 100%;
 
     .student-list {
       overflow-y: scroll;
       height: 100%;
       background-color: #fff;
 
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        background: $oc-gray-1;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: $oc-gray-5;
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: $oc-gray-6;
+      }
+
       li {
         display: flex;
         justify-content: space-between;
-        margin-top: 5px;
-        padding: 0 2px;
+        padding: 5px 2px;
+        font-size: 13px;
+        font-weight: 600;
       }
 
       button {
@@ -48,6 +84,29 @@
 
     .student-input {
       display: flex;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      width: 100%;
+      min-width: 150px;
+
+      input[type='text'] {
+        width: 100%;
+        padding: 5px;
+      }
+      .add-button {
+        align-self: center;
+        background-color: $oc-green-6;
+        color: white;
+        font-weight: 600;
+        border-radius: 5px;
+        &:hover {
+          background-color: $oc-green-8;
+        }
+      }
     }
   }
+}
+
+.load-seat {
+  display: none;
 }
