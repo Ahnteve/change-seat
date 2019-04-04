@@ -62,7 +62,8 @@ const handleClickReset = () => {
   classroom.reset();
 };
 const handleClickSet = () => {
-  classroom.setSeat(hasEmpty.checked);
+  //classroom.setSeat(hasEmpty.checked);
+  classroom.setSeat(true);
 };
 
 const handleClickAdd = () => {
@@ -119,11 +120,18 @@ setButton.addEventListener('click', handleClickSet);
 studentName.addEventListener('keyup', handleEnterAdd);
 addButton.addEventListener('click', handleClickAdd);
 saveButton.addEventListener('click', handleClickSave);
-changeModeButton.addEventListener('click', () => {
+changeModeButton.addEventListener('click', event => {
   let setMode: boolean = classroom.changeMode();
 
-  if (setMode) seatUtils.classList.add('hidden');
-  else seatUtils.classList.remove('hidden');
+  if (setMode) {
+    changeModeButton.innerText = '완료';
+    seatUtils.classList.add('hidden');
+    createDeskButton.classList.remove('hidden');
+  } else {
+    changeModeButton.innerText = '설정';
+    seatUtils.classList.remove('hidden');
+    createDeskButton.classList.add('hidden');
+  }
 });
 loadFileSelector.addEventListener('change', handleChangeFile);
 createDeskButton.addEventListener('click', () => {

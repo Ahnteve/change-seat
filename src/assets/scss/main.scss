@@ -44,12 +44,16 @@
     flex-direction: column;
     align-self: stretch;
     height: 650px;
-
+    flex: none;
+    min-width: 150px;
+    max-width: 200px;
     width: 100%;
 
     .student-list {
+      flex: none;
       overflow-y: scroll;
       height: 100%;
+      max-width: 200px;
       background-color: #fff;
 
       &::-webkit-scrollbar {
@@ -71,6 +75,8 @@
         padding: 5px 2px;
         font-size: 13px;
         font-weight: 600;
+        text-overflow: ellipsis;
+        word-break: break-all;
       }
 
       button {
@@ -79,6 +85,8 @@
         font-weight: 600;
         font-size: 12px;
         border-radius: 5px;
+        align-self: center;
+        word-break: keep-all;
       }
     }
 
@@ -87,7 +95,6 @@
       margin-right: 5px;
       margin-bottom: 5px;
       width: 100%;
-      min-width: 150px;
 
       input[type='text'] {
         width: 100%;
@@ -105,6 +112,10 @@
       }
     }
   }
+}
+
+.seat-utils {
+  margin-bottom: 5px;
 }
 
 .load-seat {
