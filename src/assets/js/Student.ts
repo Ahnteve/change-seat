@@ -28,7 +28,6 @@ class Student {
       this.x = x;
       this.y = y;
     } else {
-      console.log('random');
       this.x = GenerateRandom(0, 936);
       this.y = GenerateRandom(250 + row * 120, 250 + row * 120 + 50);
     }
