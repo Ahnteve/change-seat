@@ -11,7 +11,7 @@ class Classroom {
   private loadedImages: Object;
   private isSet: boolean;
   private count: number = 0;
-  private setMode: boolean;
+  private isSetMode: boolean;
 
   public static MAX_WIDTH: number = 1000;
   public static MAX_HEIGHT: number = 2000;
@@ -29,14 +29,14 @@ class Classroom {
     this.image.addEventListener('load', () => {
       this.draw();
     });
-    this.image.src = './image/class.png';
+    this.image.src = 'image/class.png';
     this.students = [];
     this.desks = [];
     this.row = 1;
     this.col = 1;
     this.loadedImages = loadedImages;
     this.isSet = false;
-    this.setMode = false;
+    this.isSetMode = false;
 
     this.handleStartDrag = this.handleStartDrag.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
@@ -150,7 +150,7 @@ class Classroom {
       Classroom.MAX_HEIGHT
     );
     if (this.desks) this.desks.forEach(desk => desk.draw(this.ctx));
-    if (this.students && !this.setMode)
+    if (this.students && !this.isSetMode)
       this.students.forEach(student => student.draw(this.ctx));
   }
 
@@ -165,7 +165,7 @@ class Classroom {
     const my: number = event.offsetY;
 
     if (event.which == 1) {
-      if (this.students && !this.setMode) {
+      if (this.students && !this.isSetMode) {
         const selectedStudents = this.students.filter(student =>
           student.mouseover(mx, my)
         );
@@ -193,7 +193,7 @@ class Classroom {
         }
       }
 
-      if (this.desks && this.setMode) {
+      if (this.desks && this.isSetMode) {
         const selectedDesks = this.desks.filter(desk => desk.mouseover(mx, my));
 
         if (selectedDesks.length !== 0) {
@@ -214,7 +214,7 @@ class Classroom {
     const mx: number = event.offsetX;
     const my: number = event.offsetY;
 
-    if (!this.setMode) {
+    if (!this.isSetMode) {
       const selectedStudent: Student = this.students[this.students.length - 1];
       selectedStudent.x = mx - this.diffx;
       selectedStudent.y = my - this.diffy;
@@ -231,7 +231,7 @@ class Classroom {
     const mx: number = event.offsetX;
     const my: number = event.offsetY;
 
-    if (!this.setMode) {
+    if (!this.isSetMode) {
       const selectedStudent: Student = this.students[this.students.length - 1];
 
       this.desks.forEach(desk => {
@@ -317,11 +317,10 @@ class Classroom {
     this.draw();
   }
 
-  changeMode(): boolean {
+  setMode(isSetMode: boolean) {
     this.reset();
-    this.setMode = !this.setMode;
+    this.isSetMode = isSetMode;
     this.draw();
-    return this.setMode;
   }
 }
 

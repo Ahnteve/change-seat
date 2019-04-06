@@ -10,19 +10,20 @@ const addButton: Element = document.querySelector('.js-add-button');
 const studentName: HTMLInputElement = document.querySelector(
   '.js-student-name'
 );
-const hasEmpty: HTMLInputElement = document.querySelector('[name=has-empty]');
 const studentList: Element = document.querySelector('.js-student-list');
 const saveButton: HTMLButtonElement = document.querySelector('.js-save-seat');
 const loadFileSelector: HTMLInputElement = document.querySelector(
   '.js-load-seat'
 );
-const changeModeButton: HTMLInputElement = document.querySelector(
-  '.js-change-mode'
+const setModeButton: HTMLInputElement = document.querySelector('.js-set-mode');
+const seatModeButton: HTMLInputElement = document.querySelector(
+  '.js-seat-mode'
 );
 const createDeskButton: HTMLInputElement = document.querySelector(
   '.js-create-desk'
 );
 const seatUtils: HTMLElement = document.querySelector('.js-seat-utils');
+const settingUtils: HTMLElement = document.querySelector('.js-setting-utils');
 
 const loadedImages = LoadImages([
   'image/desk.png',
@@ -120,18 +121,15 @@ setButton.addEventListener('click', handleClickSet);
 studentName.addEventListener('keyup', handleEnterAdd);
 addButton.addEventListener('click', handleClickAdd);
 saveButton.addEventListener('click', handleClickSave);
-changeModeButton.addEventListener('click', event => {
-  let setMode: boolean = classroom.changeMode();
-
-  if (setMode) {
-    changeModeButton.innerText = '완료';
-    seatUtils.classList.add('hidden');
-    createDeskButton.classList.remove('hidden');
-  } else {
-    changeModeButton.innerText = '설정';
-    seatUtils.classList.remove('hidden');
-    createDeskButton.classList.add('hidden');
-  }
+setModeButton.addEventListener('click', () => {
+  classroom.setMode(true);
+  seatUtils.classList.add('hidden');
+  settingUtils.classList.remove('hidden');
+});
+seatModeButton.addEventListener('click', () => {
+  classroom.setMode(false);
+  settingUtils.classList.add('hidden');
+  seatUtils.classList.remove('hidden');
 });
 loadFileSelector.addEventListener('change', handleChangeFile);
 createDeskButton.addEventListener('click', () => {

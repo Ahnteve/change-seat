@@ -13,6 +13,18 @@
   display: none;
 }
 
+.notice {
+  margin: 5px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid $oc-green-5;
+  background-color: $oc-green-2;
+  color: $oc-green-8;
+  font-size: 0.85rem;
+  font-weight: 400;
+  display: inline-block;
+}
+
 .button {
   font-size: 1rem;
   font-weight: 600;
@@ -28,6 +40,13 @@
     background-color: $oc-blue-6;
     &:hover {
       background-color: $oc-blue-8;
+    }
+  }
+
+  &.red {
+    background-color: $oc-red-6;
+    &:hover {
+      background-color: $oc-red-8;
     }
   }
 }
