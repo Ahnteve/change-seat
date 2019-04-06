@@ -1,11 +1,15 @@
 # change-seat
 
 ![main](/images/main.gif)
+https://change-seat.herokuapp.com/
+
+## 목차
 - [왜 만들었나?](#why)
 - [어떻게 만들었나?](#how)
   - [기존 프로젝트에서 어떤 점이 바뀌었나?](#changed)
   - [프로젝트를 진행하면서 발생한 문제는 없었나?](#problem)
 - [출처](#source)
+
 
 ## <a id="why"></a>왜 만들었나?
 
