@@ -41,8 +41,10 @@ class Classroom {
     this.handleStartDrag = this.handleStartDrag.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
+    this.handleRightClick = this.handleRightClick.bind(this);
 
     this.canvas.addEventListener('mousedown', this.handleStartDrag);
+    this.canvas.addEventListener('contextmenu', this.handleRightClick);
   }
 
   getId(): number {
@@ -94,8 +96,21 @@ class Classroom {
   }
 
   removeStudent(id: number): void {
-    const removeStudent = this.students.filter(student => student.id == id)[0];
+    const removeStudent: Student = this.students.filter(
+      student => student.id == id
+    )[0];
+    if (removeStudent.seated) {
+      const seatedDesk: Desk = this.desks.filter(
+        desk => removeStudent.seatDesk === desk.id
+      )[0];
+      seatedDesk.reset();
+    }
     this.students = this.students.filter(student => student.id !== id);
+    this.draw();
+  }
+
+  removeDesk(id: number): void {
+    this.desks = this.desks.filter(desk => desk.id !== id);
     this.draw();
   }
 
@@ -215,6 +230,7 @@ class Classroom {
   handleDrop(event: MouseEvent) {
     const mx: number = event.offsetX;
     const my: number = event.offsetY;
+
     if (!this.setMode) {
       const selectedStudent: Student = this.students[this.students.length - 1];
 
@@ -236,6 +252,19 @@ class Classroom {
 
     this.canvas.removeEventListener('mousemove', this.handleDrag);
     this.canvas.removeEventListener('mouseup', this.handleDrop);
+  }
+
+  handleRightClick(event: MouseEvent) {
+    event.preventDefault();
+
+    const mx: number = event.offsetX;
+    const my: number = event.offsetY;
+
+    const selectedDesks: Desk[] = this.desks.filter(desk =>
+      desk.mouseover(mx, my)
+    );
+    const selectedDesk: Desk = selectedDesks.pop();
+    this.removeDesk(selectedDesk.id);
   }
 
   getInfo(): Object {
